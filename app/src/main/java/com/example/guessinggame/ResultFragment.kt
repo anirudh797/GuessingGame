@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.guessinggame.databinding.FragmentResultBinding
 
@@ -33,6 +34,8 @@ class ResultFragment : Fragment() {
 
     private var _binding: FragmentResultBinding? = null
     private val binding get() = _binding!!
+    lateinit var viewModel: ResultViewModel
+    lateinit var viewModelFactory: ResultViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +44,11 @@ class ResultFragment : Fragment() {
 
         _binding = FragmentResultBinding.inflate(inflater, container, false)
         val view = binding.root
-        binding.wonLostMessage.text = ResultFragmentArgs.fromBundle(requireArguments()).result
+        val result = ResultFragmentArgs.fromBundle(requireArguments()).result
 
+        viewModelFactory = ResultViewModelFactory(finalResult = result)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ResultViewModel::class.java)
+        binding.wonLostMessage.text = viewModel.result
         binding.startNewGame.setOnClickListener {
             val action = ResultFragmentDirections.actionResultFragmentToGameFragment()
             view.findNavController().navigate(action)
