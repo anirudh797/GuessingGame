@@ -13,6 +13,9 @@ class GameViewModel : ViewModel() {
     private val livesLeft = MutableLiveData<Int>(8)
     val _livesLeft: LiveData<Int>
         get() = livesLeft
+    private val _gameWon = MutableLiveData<Boolean>(false)
+    val gameWon: LiveData<Boolean>
+        get() = _gameWon
 
     init {
         secretWordDisplay.value = deriveSecretWordDisplay()
@@ -32,9 +35,9 @@ class GameViewModel : ViewModel() {
 
     }
 
-    fun isLost(): Boolean = _livesLeft.value == 0
+    private fun isLost(): Boolean = _livesLeft.value == 0
 
-    fun isWon(): Boolean = secretWord.equals(secretWordDisplay.value, true)
+    private fun isWon(): Boolean = secretWord.equals(secretWordDisplay.value, true)
 
 
     fun wonLostMessage(): String {
@@ -60,6 +63,9 @@ class GameViewModel : ViewModel() {
                 incorrectGuesses.value += guess
                 livesLeft.value = livesLeft.value?.minus(1)
             }
+        }
+        if (isWon() || isLost()) {
+            _gameWon.value = true
         }
     }
 }

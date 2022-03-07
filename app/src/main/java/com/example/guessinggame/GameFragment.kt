@@ -52,11 +52,6 @@ class GameFragment : Fragment() {
             viewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
             updateScreen()
-            if (viewModel.isWon() || viewModel.isLost()) {
-                val action =
-                    GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
-                view.findNavController().navigate(action)
-            }
         }
         return view
 
@@ -69,6 +64,13 @@ class GameFragment : Fragment() {
         })
         binding.lives.text = "You have ${viewModel._livesLeft} lives left."
         binding.incorrectGuesses.text = "Incorrect guesses : ${viewModel.incorrectGuesses}"
+        viewModel.gameWon.observe(viewLifecycleOwner) {
+            if (it) {
+                val action =
+                    GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
+                view?.findNavController()?.navigate(action)
+            }
+        }
     }
 
     override fun onDestroyView() {
