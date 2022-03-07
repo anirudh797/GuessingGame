@@ -21,13 +21,13 @@ class GameViewModel : ViewModel() {
         secretWordDisplay.value = deriveSecretWordDisplay()
     }
 
-    private fun deriveSecretWordDisplay(): String {
-        var display = ""
-        secretWord.forEach {
-            display += checkLetter(it.toString())
-        }
-        return display
-    }
+     fun deriveSecretWordDisplay(): String {
+         var display = ""
+         secretWord.forEach {
+             display += checkLetter(it.toString())
+         }
+         return display
+     }
 
     private fun checkLetter(letter: String) = when (correctGuesses.contains(letter)) {
         true -> letter

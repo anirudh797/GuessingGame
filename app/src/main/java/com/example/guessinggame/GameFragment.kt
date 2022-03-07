@@ -62,8 +62,8 @@ class GameFragment : Fragment() {
         viewModel._livesLeft.observe(viewLifecycleOwner, Observer {
             binding.lives.text = "You have $it lives left."
         })
-        binding.lives.text = "You have ${viewModel._livesLeft} lives left."
-        binding.incorrectGuesses.text = "Incorrect guesses : ${viewModel.incorrectGuesses}"
+        binding.word.text = viewModel.deriveSecretWordDisplay()
+        binding.incorrectGuesses.text = "Incorrect guesses : ${viewModel.incorrectGuesses.value}"
         viewModel.gameWon.observe(viewLifecycleOwner) {
             if (it) {
                 val action =
