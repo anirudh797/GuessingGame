@@ -1,17 +1,21 @@
 package com.example.guessinggame
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
     val words = listOf("Android", "Activity", "Fragment")
     val secretWord = words.random().uppercase()
-    var secretWordDisplay = ""
+    private val secretWordDisplay = MutableLiveData<String>()
     var correctGuesses = ""
-    var incorrectGuesses = ""
-    var livesLeft = 8
+    val incorrectGuesses = MutableLiveData<String>("")
+    private val livesLeft = MutableLiveData<Int>(8)
+    val _livesLeft: LiveData<Int>
+        get() = livesLeft
 
     init {
-        secretWordDisplay = deriveSecretWordDisplay()
+        secretWordDisplay.value = deriveSecretWordDisplay()
     }
 
     private fun deriveSecretWordDisplay(): String {
@@ -25,11 +29,12 @@ class GameViewModel : ViewModel() {
     private fun checkLetter(letter: String) = when (correctGuesses.contains(letter)) {
         true -> letter
         false -> "_"
+
     }
 
-    fun isLost(): Boolean = livesLeft == 0
+    fun isLost(): Boolean = _livesLeft.value == 0
 
-    fun isWon(): Boolean = secretWord.equals(secretWordDisplay, true)
+    fun isWon(): Boolean = secretWord.equals(secretWordDisplay.value, true)
 
 
     fun wonLostMessage(): String {
@@ -48,12 +53,12 @@ class GameViewModel : ViewModel() {
         if (guess.length == 1) {
             if (guess in secretWord.uppercase()) {
                 correctGuesses += guess
-                secretWordDisplay = deriveSecretWordDisplay()
+                secretWordDisplay.value = deriveSecretWordDisplay()
 
             } else  //guess is incorrect
             {
-                incorrectGuesses += guess
-                livesLeft -= 1
+                incorrectGuesses.value += guess
+                livesLeft.value = livesLeft.value?.minus(1)
             }
         }
     }
