@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class GameViewModel : ViewModel() {
     val words = listOf("Android", "Activity", "Fragment")
     val secretWord = words.random().uppercase()
-    private val secretWordDisplay = MutableLiveData<String>()
+    val secretWordDisplay = MutableLiveData<String>()
     var correctGuesses = ""
     val incorrectGuesses = MutableLiveData<String>("")
     private val livesLeft = MutableLiveData<Int>(8)

@@ -1,6 +1,5 @@
 package com.example.guessinggame
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,19 +45,10 @@ class GameFragment : Fragment() {
         val view = binding.root
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-
-        updateScreen()
         binding.guessButton.setOnClickListener {
             viewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
-            updateScreen()
         }
-        return view
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun updateScreen() {
         viewModel._livesLeft.observe(viewLifecycleOwner, Observer {
             binding.lives.text = "You have $it lives left."
         })
@@ -68,10 +58,20 @@ class GameFragment : Fragment() {
             if (it) {
                 val action =
                     GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage())
-                view?.findNavController()?.navigate(action)
+                view.findNavController().navigate(action)
             }
         }
+        viewModel.incorrectGuesses.observe(viewLifecycleOwner) {
+            binding.incorrectGuesses.text = it
+        }
+        viewModel.secretWordDisplay.observe(viewLifecycleOwner) {
+            binding.word.text = it
+        }
+        binding.gameViewmodel = viewModel
+        return view
+
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

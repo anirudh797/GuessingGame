@@ -48,12 +48,11 @@ class ResultFragment : Fragment() {
 
         viewModelFactory = ResultViewModelFactory(finalResult = result)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ResultViewModel::class.java)
-        binding.wonLostMessage.text = viewModel.result
         binding.startNewGame.setOnClickListener {
             val action = ResultFragmentDirections.actionResultFragmentToGameFragment()
             view.findNavController().navigate(action)
         }
-
+            binding.resultViewModel = viewModel
 
         return view
     }
