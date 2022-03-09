@@ -68,4 +68,9 @@ class GameViewModel : ViewModel() {
             _gameWon.value = true
         }
     }
+
+    fun finishGame() {
+        _gameWon.value = true
+    }
+
 }

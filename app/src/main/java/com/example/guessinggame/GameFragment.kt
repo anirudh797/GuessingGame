@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.guessinggame.databinding.FragmentGameBinding
@@ -49,11 +48,7 @@ class GameFragment : Fragment() {
             viewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
         }
-        viewModel._livesLeft.observe(viewLifecycleOwner, Observer {
-            binding.lives.text = "You have $it lives left."
-        })
-        binding.word.text = viewModel.deriveSecretWordDisplay()
-        binding.incorrectGuesses.text = "Incorrect guesses : ${viewModel.incorrectGuesses.value}"
+
         viewModel.gameWon.observe(viewLifecycleOwner) {
             if (it) {
                 val action =
@@ -61,13 +56,8 @@ class GameFragment : Fragment() {
                 view.findNavController().navigate(action)
             }
         }
-        viewModel.incorrectGuesses.observe(viewLifecycleOwner) {
-            binding.incorrectGuesses.text = it
-        }
-        viewModel.secretWordDisplay.observe(viewLifecycleOwner) {
-            binding.word.text = it
-        }
         binding.gameViewmodel = viewModel
+        binding.lifecycleOwner = this
         return view
 
     }

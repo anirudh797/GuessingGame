@@ -30,7 +30,7 @@
             android:id="@+id/lives"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="@{@string/lives_left(gameViewmodel._livesLeft)}"
             android:textSize="16sp" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@{gameViewmodel.incorrectGuesses}" />
+            android:text="@{@string/incorrect_guesses(gameViewmodel.incorrectGuesses)}" />
 
         <EditText
             android:id="@+id/guess"
@@ -56,6 +56,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Guess!" />
+
+        <Button
+            android:id="@+id/finishGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClickListener="@{()->gameViewmodel.finishGame()}"
+            android:text="Finish Game" />
 
 
     </LinearLayout>
